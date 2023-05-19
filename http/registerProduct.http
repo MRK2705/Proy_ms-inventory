@@ -1,1 +1,1 @@
-POST http://localhost:1234/api/v1/product/register?productName=Samsung&description=A51&price=1000
+POST http://localhost:1234/api/v1/product/register?productName=Xiaomi&description=RedmiNote10&price=9000

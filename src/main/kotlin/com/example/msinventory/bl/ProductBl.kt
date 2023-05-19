@@ -22,9 +22,6 @@ class ProductBl @Autowired constructor(private val productRepository: ProductRep
         val LOGGER: Logger = LoggerFactory.getLogger(ProductBl::class.java.name)
     }
 
-//    @Value("\${currency.url}")
-//    private val url: String? = null
-
     //funcion para registrar un producto
     fun registerProduct(productName: String, description: String, price: BigDecimal): ProductDto {
         LOGGER.info("Registrando producto")

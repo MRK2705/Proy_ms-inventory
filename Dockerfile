@@ -18,6 +18,9 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-ENV URL_DISCOVERY ${DISCOVERY_URL}
+ENV URL_DISCOVERY "http://localhost:8701"
+ENV SERVER_URI "http://localhost:8888"
+ENV PROFILE "local"
+
 
 ENTRYPOINT ["java","-Dspring.profiles.active=prod","-cp","app:app/lib/*","com.example.msinventory.MsInventoryApplicationKt"]

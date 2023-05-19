@@ -8,14 +8,6 @@ data class ProductDto (
     var productName: String?,
     var description: String?,
     var price: BigDecimal?,
-    @JsonIgnore
-    var timestamp: Timestamp? = null,
-    @JsonIgnore
-    var status: String? = null,
-    @JsonIgnore
-    var error: String? = null,
-    @JsonIgnore
-    var path: String? = null
 
 ) {
     constructor() : this(null, null, null)
