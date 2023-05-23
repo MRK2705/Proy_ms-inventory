@@ -1,1 +1,11 @@
-POST http://localhost:1234/api/v1/product/register?productName=Xiaomi&description=RedmiNote10&price=9000
+# Crear un producto
+POST http://localhost:1236/api/v1/product/register?productName=Xiaomi&description=RedmiNote10&price=9000
+###
+# Obtener un producto por ID
+GET http://localhost:1236/api/v1/product/1
+###
+# Actualizar un producto
+PUT http://localhost:1236/api/v1/product/update/1?productName=XiaomiUpdated&description=RedmiNote10Updated&price=9500
+###
+# Eliminar un producto
+DELETE http://localhost:1236/api/v1/product/delete/1

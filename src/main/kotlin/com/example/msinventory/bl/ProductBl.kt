@@ -8,6 +8,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.FormBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -34,5 +36,36 @@ class ProductBl @Autowired constructor(private val productRepository: ProductRep
         val productDto = ProductDto(product.productName, product.description, product.price)
         return productDto
     }
+    fun getAllProducts(pageable: Pageable): Page<ProductDto> {
+        LOGGER.info("Obteniendo todos los productos paginados")
+        val productsPage: Page<Product> = productRepository.findAll(pageable)
+        return productsPage.map { product -> ProductDto(product.productName, product.description, product.price) }
+    }
+    fun getProductById(productId: Long): ProductDto {
+        LOGGER.info("Obteniendo producto por ID: $productId")
+        val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
+        return ProductDto(product.productName, product.description, product.price)
+    }
+    fun updateProduct(productId: Long, productName: String?, description: String?, price: BigDecimal?): ProductDto {
+        LOGGER.info("Actualizando producto con ID: $productId")
+        val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
+        productName?.let { product.productName = it }
+        description?.let { product.description = it }
+        price?.let { product.price = it }
+        productRepository.save(product)
+        return ProductDto(product.productName, product.description, product.price)
+    }
+    fun deleteProduct(productId: Long) {
+        LOGGER.info("Eliminando producto con ID: $productId")
+        if (productRepository.existsById(productId)) {
+            productRepository.deleteById(productId)
+            LOGGER.info("Producto eliminado")
+        } else {
+            throw NoSuchElementException("Producto no encontrado")
+        }
+    }
+
+
+
 
 }
