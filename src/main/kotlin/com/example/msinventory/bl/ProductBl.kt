@@ -15,16 +15,17 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import okhttp3.OkHttpClient
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.PageRequest
 
 @Service
-class ProductBl @Autowired constructor(private val productRepository: ProductRepository ){
+class ProductBl @Autowired constructor(private val productRepository: ProductRepository) {
 
     companion object {
         val objectMapper = jacksonObjectMapper()
         val LOGGER: Logger = LoggerFactory.getLogger(ProductBl::class.java.name)
     }
 
-    //funcion para registrar un producto
+    // Función para registrar un producto
     fun registerProduct(productName: String, description: String, price: BigDecimal, image: String): ProductDto {
         LOGGER.info("Registrando producto")
         val product: Product = Product()
@@ -34,40 +35,45 @@ class ProductBl @Autowired constructor(private val productRepository: ProductRep
         product.image = image
         productRepository.save(product)
         LOGGER.info("Producto guardado en base de datos")
-        val productDto = ProductDto(product.productName, product.description, product.price,product.image)
+        val productDto = ProductDto(product.id, product.productName, product.description, product.price, product.image)
         return productDto
     }
-    fun getAllProducts(pageable: Pageable): Page<ProductDto> {
+
+    // Función para obtener un producto por su ID
+    fun getProductById(id: Long): ProductDto? {
+        LOGGER.info("Obteniendo producto por ID")
+        val product = productRepository.findById(id).orElse(null)
+        return ProductDto(product.id, product.productName, product.description, product.price, product.image)
+
+    }
+    // Función para obtener todos los productos
+    fun getAllProducts(page: Int, size: Int): Any {
         LOGGER.info("Obteniendo todos los productos paginados")
-        val productsPage: Page<Product> = productRepository.findAll(pageable)
-        return productsPage.map { product -> ProductDto(product.productName, product.description, product.price,product.image) }
+        val productsPage = productRepository.findAll(PageRequest.of(page, size))
+        return productsPage
     }
-    fun getProductById(productId: Long): ProductDto {
-        LOGGER.info("Obteniendo producto por ID: $productId")
-        val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
-        return ProductDto(product.productName, product.description, product.price,product.image)
-    }
-    fun updateProduct(productId: Long, productName: String?, description: String?, price: BigDecimal?,image:String?): ProductDto {
-        LOGGER.info("Actualizando producto con ID: $productId")
-        val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
-        productName?.let { product.productName = it }
-        description?.let { product.description = it }
-        price?.let { product.price = it }
-        image?.let { product.image = it }
-        productRepository.save(product)
-        return ProductDto(product.productName, product.description, product.price,product.image)
-    }
-    fun deleteProduct(productId: Long) {
-        LOGGER.info("Eliminando producto con ID: $productId")
-        if (productRepository.existsById(productId)) {
-            productRepository.deleteById(productId)
-            LOGGER.info("Producto eliminado")
-        } else {
-            throw NoSuchElementException("Producto no encontrado")
+
+    // Función para actualizar un producto
+    fun updateProduct(id: Long, productName: String, description: String, price: BigDecimal, image: String): ProductDto? {
+        LOGGER.info("Actualizando producto")
+        val product = productRepository.findById(id).orElse(null)
+        if (product != null) {
+            product.productName = productName
+            product.description = description
+            product.price = price
+            product.image = image
+            productRepository.save(product)
+            LOGGER.info("Producto actualizado en base de datos")
+            return ProductDto(product.id, product.productName, product.description, product.price, product.image)
         }
+        return null
     }
 
-
-
+    // Función para eliminar un producto
+    fun deleteProduct(id: Long) {
+        LOGGER.info("Eliminando producto")
+        productRepository.deleteById(id)
+        LOGGER.info("Producto eliminado de la base de datos")
+    }
 
 }

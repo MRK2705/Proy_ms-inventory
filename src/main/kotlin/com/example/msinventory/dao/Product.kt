@@ -12,7 +12,7 @@ class Product (
     var image: String,
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var productId: Long = 0,
+    var id: Long = 0,
 ) {
     constructor() : this("","", BigDecimal.ZERO, "",0)
 }

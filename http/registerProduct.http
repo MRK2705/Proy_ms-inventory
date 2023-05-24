@@ -1,5 +1,5 @@
 # Crear un producto
-POST http://localhost:1236/api/v1/product/register?productName=Xiaomi&description=RedmiNote10&price=9000
+POST http://localhost:1234/api/v1/product/register?productName=Xiaomi&description=RedmiNote10&price=9000
 ###
 # Obtener un producto por ID
 GET http://localhost:1236/api/v1/product/1
