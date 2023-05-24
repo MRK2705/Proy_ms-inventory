@@ -25,35 +25,37 @@ class ProductBl @Autowired constructor(private val productRepository: ProductRep
     }
 
     //funcion para registrar un producto
-    fun registerProduct(productName: String, description: String, price: BigDecimal): ProductDto {
+    fun registerProduct(productName: String, description: String, price: BigDecimal, image: String): ProductDto {
         LOGGER.info("Registrando producto")
         val product: Product = Product()
         product.productName = productName
         product.description = description
         product.price = price
+        product.image = image
         productRepository.save(product)
         LOGGER.info("Producto guardado en base de datos")
-        val productDto = ProductDto(product.productName, product.description, product.price)
+        val productDto = ProductDto(product.productName, product.description, product.price,product.image)
         return productDto
     }
     fun getAllProducts(pageable: Pageable): Page<ProductDto> {
         LOGGER.info("Obteniendo todos los productos paginados")
         val productsPage: Page<Product> = productRepository.findAll(pageable)
-        return productsPage.map { product -> ProductDto(product.productName, product.description, product.price) }
+        return productsPage.map { product -> ProductDto(product.productName, product.description, product.price,product.image) }
     }
     fun getProductById(productId: Long): ProductDto {
         LOGGER.info("Obteniendo producto por ID: $productId")
         val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
-        return ProductDto(product.productName, product.description, product.price)
+        return ProductDto(product.productName, product.description, product.price,product.image)
     }
-    fun updateProduct(productId: Long, productName: String?, description: String?, price: BigDecimal?): ProductDto {
+    fun updateProduct(productId: Long, productName: String?, description: String?, price: BigDecimal?,image:String?): ProductDto {
         LOGGER.info("Actualizando producto con ID: $productId")
         val product: Product = productRepository.findById(productId).orElseThrow { NoSuchElementException("Producto no encontrado") }
         productName?.let { product.productName = it }
         description?.let { product.description = it }
         price?.let { product.price = it }
+        image?.let { product.image = it }
         productRepository.save(product)
-        return ProductDto(product.productName, product.description, product.price)
+        return ProductDto(product.productName, product.description, product.price,product.image)
     }
     fun deleteProduct(productId: Long) {
         LOGGER.info("Eliminando producto con ID: $productId")

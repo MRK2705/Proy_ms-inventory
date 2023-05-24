@@ -14,8 +14,8 @@ class ProductApi (private val productBl: ProductBl){
 
     //api de registro de producto
     @PostMapping("/register")
-    fun registerProduct(@RequestParam productName: String, @RequestParam description: String, @RequestParam price: BigDecimal): ResponseEntity<Any> {
-        val productDto = productBl.registerProduct(productName, description, price)
+    fun registerProduct(@RequestParam productName: String, @RequestParam description: String, @RequestParam price: BigDecimal, @RequestParam image:String ): ResponseEntity<Any> {
+        val productDto = productBl.registerProduct(productName, description, price,image)
         return ResponseEntity.ok(productDto)
     }
     @GetMapping("/all")
@@ -29,8 +29,8 @@ class ProductApi (private val productBl: ProductBl){
         return ResponseEntity.ok(productDto)
     }
     @PutMapping("/update/{id}")
-    fun updateProduct(@PathVariable id: Long, @RequestParam productName: String?, @RequestParam description: String?, @RequestParam price: BigDecimal?): ResponseEntity<ProductDto> {
-        val updatedProduct: ProductDto = productBl.updateProduct(id, productName, description, price)
+    fun updateProduct(@PathVariable id: Long, @RequestParam productName: String?, @RequestParam description: String?, @RequestParam price: BigDecimal?, @RequestParam image: String): ResponseEntity<ProductDto> {
+        val updatedProduct: ProductDto = productBl.updateProduct(id, productName, description, price, image)
         return ResponseEntity.ok(updatedProduct)
     }
     @DeleteMapping("/delete/{id}")

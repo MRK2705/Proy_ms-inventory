@@ -8,11 +8,12 @@ data class ProductDto (
     var productName: String?,
     var description: String?,
     var price: BigDecimal?,
+    var image: String?,
 
 ) {
-    constructor() : this(null, null, null)
+    constructor() : this(null, null, null,null)
 
     override fun toString(): String {
-        return "ProductDto(productName=$productName, description=$description, price=$price)"
+        return "ProductDto(productName=$productName, description=$description, price=$price, image=$image)"
     }
 }

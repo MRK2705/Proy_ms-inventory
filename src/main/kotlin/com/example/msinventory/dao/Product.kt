@@ -9,9 +9,10 @@ class Product (
     var productName: String,
     var description: String,
     var price: BigDecimal,
+    var image: String,
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var productId: Long = 0,
 ) {
-    constructor() : this("","", BigDecimal.ZERO, 0)
+    constructor() : this("","", BigDecimal.ZERO, "",0)
 }
