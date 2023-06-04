@@ -2,6 +2,10 @@ package com.example.msinventory.api
 
 import com.example.msinventory.bl.ProductBl
 import com.example.msinventory.dto.ProductDto
+import io.github.resilience4j.bulkhead.annotation.Bulkhead
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.data.domain.Page
 import org.springframework.http.ResponseEntity
 import java.math.BigDecimal
@@ -14,6 +18,10 @@ class ProductApi (private val productBl: ProductBl){
 
     //api de registro de producto
     @PostMapping("/register")
+    @CircuitBreaker(name = "productCB", fallbackMethod = "registerProductFallback")
+    @Bulkhead(name = "productBH", fallbackMethod = "registerProductFallback")
+    @RateLimiter(name = "productRL", fallbackMethod = "registerProductFallback")
+    @Retry(name = "productRT", fallbackMethod = "registerProductFallback")
     fun registerProduct(
         @RequestParam("productName") productName: String,
         @RequestParam("description") description: String,
@@ -23,13 +31,28 @@ class ProductApi (private val productBl: ProductBl){
         val productDto = productBl.registerProduct(productName, description, price, image)
         return ResponseEntity.ok(productDto)
     }
+    fun registerProductFallback(productName: String, description: String, price: BigDecimal, image: String, throwable: Throwable): ResponseEntity<Any> {
+        return ResponseEntity.ok("Error")
+    }
 
     @GetMapping("/all")
+    @CircuitBreaker(name = "productCB", fallbackMethod = "getAllProductsFallback")
+    @Bulkhead(name = "productBH", fallbackMethod = "getAllProductsFallback")
+    @RateLimiter(name = "productRL", fallbackMethod = "getAllProductsFallback")
+    @Retry(name = "productRT", fallbackMethod = "getAllProductsFallback")
     fun getAllProducts(@RequestParam("page") page: Int, @RequestParam("size") size: Int):Any {
         val productsPage: Any = productBl.getAllProducts(page, size)
         return ResponseEntity.ok(productsPage)
     }
+    fun getAllProductsFallback(page: Int, size: Int, throwable: Throwable): ResponseEntity<Any> {
+        return ResponseEntity.ok("Error")
+    }
+
     @GetMapping("/getById")
+    @CircuitBreaker(name = "productCB", fallbackMethod = "getProductByIdFallback")
+    @Bulkhead(name = "productBH", fallbackMethod = "getProductByIdFallback")
+    @RateLimiter(name = "productRL", fallbackMethod = "getProductByIdFallback")
+    @Retry(name = "productRT", fallbackMethod = "getProductByIdFallback")
     fun getProductById(@RequestParam("id") id: Long): ResponseEntity<ProductDto?> {
         val productDto = productBl.getProductById(id)
         return if (productDto != null) {
@@ -38,8 +61,15 @@ class ProductApi (private val productBl: ProductBl){
             ResponseEntity.notFound().build()
         }
     }
+    fun getProductByIdFallback(id: Long, throwable: Throwable): ResponseEntity<Any> {
+        return ResponseEntity.ok("Error")
+    }
 
     @PutMapping("/update")
+    @CircuitBreaker(name = "productCB", fallbackMethod = "updateProductFallback")
+    @Bulkhead(name = "productBH", fallbackMethod = "updateProductFallback")
+    @RateLimiter(name = "productRL", fallbackMethod = "updateProductFallback")
+    @Retry(name = "productRT", fallbackMethod = "updateProductFallback")
     fun updateProduct(
         @RequestParam("id") id: Long,
         @RequestParam("productName") productName: String,
@@ -54,7 +84,15 @@ class ProductApi (private val productBl: ProductBl){
             ResponseEntity.notFound().build()
         }
     }
+    fun updateProductFallback(id: Long, productName: String, description: String, price: BigDecimal, image: String, throwable: Throwable): ResponseEntity<Any> {
+        return ResponseEntity.ok("Error")
+    }
+
     @DeleteMapping("/delete")
+    @CircuitBreaker(name = "productCB", fallbackMethod = "deleteProductFallback")
+    @Bulkhead(name = "productBH", fallbackMethod = "deleteProductFallback")
+    @RateLimiter(name = "productRL", fallbackMethod = "deleteProductFallback")
+    @Retry(name = "productRT", fallbackMethod = "deleteProductFallback")
     fun deleteProduct(@RequestParam("id") id: Long): ResponseEntity<Any> {
         productBl.deleteProduct(id)
         return ResponseEntity.ok().build()

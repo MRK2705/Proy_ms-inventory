@@ -19,5 +19,54 @@ eureka:
     client:
       registerWithEureka: true
       serviceUrl:
-        defaultZone: ${DISCOVERY_URL:http://localhost:8701/eureka/}
+        defaultZone: ${DISCOVERY_URL:http://ms-discovery:8701/eureka/}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      userCB:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 2000
+    instances:
+      userBH:
+        baseConfig: default
+  ratelimiter:
+    configs:
+      default:
+        limitRefreshPeriod: 10s
+        limitForPeriod: 10
+    instances:
+      userRL:
+        baseConfig: default
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 500ms
+    instances:
+      userRT:
+        baseConfig: default
+
+management:
+  endpoints:
+    web:
+    exposure:
+      include: "*"
+
+  endpoint:
+    health:
+      circuitbreakers:
+        enabled: true
+
 

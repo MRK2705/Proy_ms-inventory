@@ -18,9 +18,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
-ENV URL_DISCOVERY "http://ms-discovery:8701"
-ENV SERVER_URI "http://ms-config-server:8888"
-ENV PROFILE "local"
-
-
 ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.msinventory.MsInventoryApplicationKt"]
