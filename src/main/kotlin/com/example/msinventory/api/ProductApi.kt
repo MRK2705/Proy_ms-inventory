@@ -1,6 +1,6 @@
 package com.example.msinventory.api
 
-import com.example.msinventory.Minio.testMinio
+//import com.example.msinventory.Minio.testMinio
 import com.example.msinventory.bl.ProductBl
 import com.example.msinventory.dto.ProductDto
 import io.github.resilience4j.bulkhead.annotation.Bulkhead
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/v1/product")
 class ProductApi (private val productBl: ProductBl){
 
-    @Autowired
-    lateinit var testMinio: testMinio
+//    @Autowired
+//    lateinit var testMinio: testMinio
 
     //api de registro de producto
     @PostMapping("/register")
@@ -107,10 +107,10 @@ class ProductApi (private val productBl: ProductBl){
     }
 
     //endpoint para probar conexion con minio
-    @GetMapping("/test")
-    fun testMinio(): ResponseEntity<Any> {
-        val test = testMinio.testMinioConnection()
-        return ResponseEntity.ok(test)
-    }
+//    @GetMapping("/test")
+//    fun testMinio(): ResponseEntity<Any> {
+//        val test = testMinio.testMinioConnection()
+//        return ResponseEntity.ok(test)
+//    }
 
 }

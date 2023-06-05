@@ -24,11 +24,10 @@ ENV PGURL ${POSTGRES_URL}
 
 ENV SERVER_URI ${SERVER_URI}
 ENV DISCOVERY_URI ${DISCOVERY_URL}
-ENV PROFILE ${PROFILE}
 
-ENV MINIO_URL ${MINIO_URL}
-ENV MINIO_ACCESS_KEY ${MINIO_AK}
-ENV MINIO_SECRET_KEY ${MINIO_SK}
-ENV MINIO_BUCKET ${MINIO_BUCKET}
+#ENV MINIO_URL ${MINIO_URL}
+#ENV MINIO_ACCESS_KEY ${MINIO_AK}
+#ENV MINIO_SECRET_KEY ${MINIO_SK}
+#ENV MINIO_BUCKET ${MINIO_BUCKET}
 
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.msinventory.MsInventoryApplicationKt"]
+ENTRYPOINT ["java","-cp","app:app/lib/*", "-Dspring.profiles.active=prod","com.example.msinventory.MsInventoryApplicationKt"]

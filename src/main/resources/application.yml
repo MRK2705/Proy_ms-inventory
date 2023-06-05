@@ -18,7 +18,7 @@ spring:
     name: ms-inventory
 
 keycloak:
-  auth-server-url: http://192.168.149:8081
+  auth-server-url: http://172.18.5.38:8081
   autodetect-bearer-only: true
   credentials:
     secret: tCDIWn00UTUCJeARVwSvN3mAOPewdxBX
@@ -48,11 +48,11 @@ eureka:
       serviceUrl:
         defaultZone: ${DISCOVERY_URL:http://ms-discovery:8701/eureka/}
 
-minio:
-  access-key: ${MINIO_AK:eOVCfYh7WDgRp6q5rZuh}
-  secret-key: ${MINIO_SK:V0tYbqTwpt8fWGhJo3CfadyweWCm0Vi0VF44RRZ5}
-  url: ${MINIO_URL:http://minio:9001}
-  bucket: ${MINIO_BUCKET:logssoftware}
+#minio:
+#  access-key: ${MINIO_AK:eOVCfYh7WDgRp6q5rZuh}
+#  secret-key: ${MINIO_SK:V0tYbqTwpt8fWGhJo3CfadyweWCm0Vi0VF44RRZ5}
+#  url: ${MINIO_URL:http://172.18.5.38:9001}
+#  bucket: ${MINIO_BUCKET:logssoftware}
 
 resilience4j:
   circuitbreaker:
