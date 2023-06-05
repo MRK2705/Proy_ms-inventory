@@ -6,7 +6,7 @@ spring:
     type: org.postgresql.jdbc2.optional.SimpleDataSource
     username: ${USER_NAME:postgres}
     password: ${PASSWORD:mysecretpassword}
-    url: ${URL:jdbc:postgresql://postgres:5432/postgres}
+    url: ${URL:jdbc:postgresql://localhost:5432/postgres}
   config:
     import: optional:file:.env[.properties]
   jpa:
@@ -15,11 +15,40 @@ spring:
   application:
     name: ms-inventory
 
+keycloak:
+  auth-server-url: http://localhsost:8081
+  autodetect-bearer-only: true
+  credentials:
+    secret: tCDIWn00UTUCJeARVwSvN3mAOPewdxBX
+  realm: ms-software
+  resource: backend
+  ssl-required: none
+  use-resource-role-mappings: false
+  security-constraints:
+    - auth-roles:
+        - ADMIN
+      security-collections:
+        - name: SERVICIOS DE ADMINISTRADOR
+          omitted-methods:
+            - OPTIONS
+          patterns:
+            - /api/v1/product/register
+            - /api/v1/product/update
+            - /api/v1/product/delete
+            - /api/v1/product/all
+            - /api/v1/product/getById
+
 eureka:
     client:
-      registerWithEureka: true
+      registerWithEureka: false
       serviceUrl:
-        defaultZone: ${DISCOVERY_URL:http://ms-discovery:8701/eureka/}
+        defaultZone: ${DISCOVERY_URL:http://localhost:8701/eureka/}
+
+minio:
+  access-key: ${MINIO_AK:CJ2rPQH4mxESmLxY}
+  secret-key: ${MINIO_SK:Qx4rKAkQBMwrejdGH7C2FzoO4uPTulJf}
+  url: ${MINIO_URL:http://localhost:9000}
+  bucket: ${MINIO_BUCKET:logssoftware}
 
 resilience4j:
   circuitbreaker:

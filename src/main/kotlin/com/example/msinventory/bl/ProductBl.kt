@@ -1,6 +1,5 @@
 package com.example.msinventory.bl
 
-import com.amazonaws.services.sns.AmazonSNSClient
 import com.example.msinventory.dao.Product
 import com.example.msinventory.dao.Repository.ProductRepository
 import com.example.msinventory.dto.ProductDto
@@ -22,13 +21,6 @@ class ProductBl @Autowired constructor(private val productRepository: ProductRep
 
     // Función para registrar un producto
     fun registerProduct(productName: String, description: String, price: BigDecimal, image: String): ProductDto {
-        val snsClient: AmazonSNSClient
-        snsClient = AmazonSNSClient.builder().build() as AmazonSNSClient
-        val topicArn = "arn:aws:sns:us-east-1:123456789012:msinventory-topic"
-        val message = "Se ha registrado un nuevo producto: $productName"
-        snsClient.publish(topicArn, message)
-
-
         LOGGER.info("Registrando producto")
         val product: Product = Product()
         product.productName = productName
