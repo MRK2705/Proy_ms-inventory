@@ -102,6 +102,9 @@ class ProductApi (private val productBl: ProductBl){
         productBl.deleteProduct(id)
         return ResponseEntity.ok().build()
     }
+    fun deleteProductFallback(id: Long, throwable: Throwable): ResponseEntity<Any> {
+        return ResponseEntity.ok("Error")
+    }
 
     //endpoint para probar conexion con minio
     @GetMapping("/test")
