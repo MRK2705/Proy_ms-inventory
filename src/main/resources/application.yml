@@ -2,6 +2,8 @@ server:
   port: 1234
 
 spring:
+  zipkin:
+    base-url: http://localhost:9411/
   datasource:
     type: org.postgresql.jdbc2.optional.SimpleDataSource
     username: ${USER_NAME:postgres}
