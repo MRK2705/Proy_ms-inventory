@@ -3,12 +3,12 @@ server:
 
 spring:
   zipkin:
-    base-url: http://localhost:9411/
+    base-url: http://zipkin:9411/
   datasource:
     type: org.postgresql.jdbc2.optional.SimpleDataSource
     username: ${USER_NAME:postgres}
     password: ${PASSWORD:mysecretpassword}
-    url: ${URL:jdbc:postgresql://localhost:5432/postgres}
+    url: ${URL:jdbc:postgresql://postgres:5432/postgres}
   config:
     import: optional:file:.env[.properties]
   jpa:
@@ -18,7 +18,7 @@ spring:
     name: ms-inventory
 
 keycloak:
-  auth-server-url: http://localhost:8081
+  auth-server-url: http://192.168.149:8081
   autodetect-bearer-only: true
   credentials:
     secret: tCDIWn00UTUCJeARVwSvN3mAOPewdxBX
@@ -46,12 +46,12 @@ eureka:
     client:
       registerWithEureka: true
       serviceUrl:
-        defaultZone: ${DISCOVERY_URL:http://localhost:8701/eureka/}
+        defaultZone: ${DISCOVERY_URL:http://ms-discovery:8701/eureka/}
 
 minio:
-  access-key: ${MINIO_AK:CJ2rPQH4mxESmLxY}
-  secret-key: ${MINIO_SK:Qx4rKAkQBMwrejdGH7C2FzoO4uPTulJf}
-  url: ${MINIO_URL:http://localhost:9000}
+  access-key: ${MINIO_AK:eOVCfYh7WDgRp6q5rZuh}
+  secret-key: ${MINIO_SK:V0tYbqTwpt8fWGhJo3CfadyweWCm0Vi0VF44RRZ5}
+  url: ${MINIO_URL:http://minio:9001}
   bucket: ${MINIO_BUCKET:logssoftware}
 
 resilience4j:
@@ -99,7 +99,7 @@ management:
 
   endpoint:
     health:
-      circuitbreakers:
+      circuit-breakers:
         enabled: true
 
 
